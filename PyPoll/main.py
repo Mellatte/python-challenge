@@ -1,11 +1,10 @@
 #import CSV file 
 
-
 import csv
 
 #files to load and output
 
-file_to_load = "Resoures/election_data.csv"
+file_to_load = "Resources/election_data.csv"
 file_to_output = "Analysis/election_analysis.txt"
 
 #variables need to use to analyze the votes
@@ -17,9 +16,8 @@ winning_candidate = ""
 winning_count = 0 
 
 #read the csv file
-with open(file_to_load) as election_data:
+with open(file_to_load) as election_data :
     reader = csv.DictReader(election_data)
-
 
 #create a loop 
     for row in reader:
@@ -79,8 +77,3 @@ with open(file_to_load) as election_data:
 
         #save the winning candidate name to txt
         txt_file.write(winning_candidate_summary)
-
-
-
-
-

@@ -62,5 +62,67 @@ us_state_abbreviation = {
 }
 
 
+#placeholders for re-formatted
+emp_ids = []
+emp_first_names = []
+emp_last_names = []
+emp_dobs = []
+emp_ssns = []
+emp_states = []
+
+
+#read the csv and convert it into a list
+with open(file_to_load) as employee_data:
+   reader = csv.DictReader(employee_data)
+
+   #loop through each row
+   for row in reader:
+
+     #store it into a list 
+     emp_ids = emp_ids + [row["Emp ID"]]
+
+     #spilt name store it in var
+     split_name = row["Name"].split(" ")
+
+     #save first and last name in separate list
+     emp_first_names = emp_first_names + [split_name[0]]
+     emp_last_names = emp_last_names + [split_name[1]]
+
+     #reformate DOB
+     reformatted_dob = datetime.datetime.strptime(row["DOB"], "%Y-%m-%d")
+     reformatted_dob = reformatted_dob.strftime("%m%d%y")
+
+     #store it into a list
+     emp_dobs = emp_dobs + [reformatted_dob]
+
+     #reformat SSN
+     split_ssn = list(row["SSN"])
+     split_ssn[0:3] = ("*", "*", "*")
+     split_ssn[4:6] = ("*", "*")
+     joined_ssn = "".join(split_ssn)
+
+     #store into list
+     emp_ssns = emp_ssns + [joined_ssn]
+
+     #use dic to find replacement for state
+     state_abbreviation = us_state_abbreviation[row["State"]]
+
+     #store abbre into list
+     emp_states = emp_states + [state_abbreviation]
+
+#zip all new lists 
+empbd = zip(emp_ids,emp_first_names,emp_last_names,emp_dobs,emp_ssns,emp_states)
+
+#write election data to csv
+with open(file_to_output, "w", newline="") as datafile:
+  writer = csv.writer(datafile)
+  writer.writerow(["Emp ID", "First Name", "Last Name", "DOB","SSN", "State"])
+  writer.writerows(empbd)
+
+  
+
+
+
+
 
 
